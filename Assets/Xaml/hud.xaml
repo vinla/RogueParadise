@@ -15,8 +15,17 @@
         <StackPanel Orientation="Horizontal">
           <TextBlock Margin="5">Damage:</TextBlock>
           <TextBlock Margin="5" Text="{Binding Damage}"></TextBlock>
-        </StackPanel>
-      </StackPanel>
+        </StackPanel>     
+        <Grid Margin="5" Width="220" HorizontalAlignment="Left">
+          <Rectangle Height="25" Width="200" Fill="White" HorizontalAlignment="Left"/>
+          <Rectangle Height="25" Width="{Binding DamagePercentage}" Fill="Green" HorizontalAlignment="Left"/>
+          <TextBlock Margin="5" Text="{Binding DamageText}"></TextBlock>
+        </Grid>
+        <Grid Margin="5" Width="220" HorizontalAlignment="Left">
+          <Rectangle Height="25" Width="200" Fill="White" HorizontalAlignment="Left"/>
+          <Rectangle Height="25" Width="{Binding EnergyPercentage}" Fill="Green" HorizontalAlignment="Left"/>
+        </Grid>
+      </StackPanel>      
     </DockPanel>
   </Grid>
 </Page>

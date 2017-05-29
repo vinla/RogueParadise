@@ -11,16 +11,27 @@ namespace Assets.Scripts
         [SerializeField]
         private float _moveSpeed = 5f;
         [SerializeField]
+        private float _maxHitPoints = 50f;
+        [SerializeField]
         private float _hitPoints = 10f;
+        [SerializeField]
+        private float _energyRecoveryRate = .3f;
+        [SerializeField]
+        private float _maxEnergy = 10f;
+        [SerializeField]
+        private float _energyPerShot = 1f;
         
         private Camera _mainCamera;
         private PlayerController _playerController;
         private Quaternion _targetRotation;
+        private float _energy;
 
         public void Start()
         {
             _playerController = GetComponent<PlayerController>();
             _mainCamera = Camera.main;
+            _energy = _maxEnergy;
+            _hitPoints = _maxHitPoints;
         }
 
         public void Update()
@@ -47,8 +58,15 @@ namespace Assets.Scripts
 
             if (Input.GetMouseButton(0))
             {
-                _playerController.Fire();
+                if (_energy > _energyPerShot && _playerController.Fire())
+                {
+                    _energy -= _energyPerShot;                    
+                }
             }
+
+            _energy += Time.deltaTime * _energyRecoveryRate;
+            if (_energy > _maxEnergy)
+                _energy = _maxEnergy;
         }
 
         public void OnHit(DamageInfo damageInfo)
@@ -62,8 +80,14 @@ namespace Assets.Scripts
             }
         }
 
+        public float MaxHitPoints { get { return _maxHitPoints; } }
+
         public float HitPoints { get { return _hitPoints; } }        
 
         public float CrystalCount { get; set; }
+
+        public float Energy { get { return _energy; } }
+
+        public float MaxEnergy { get { return _maxEnergy; } }
     }
 }

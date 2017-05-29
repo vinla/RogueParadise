@@ -15,8 +15,9 @@ namespace Assets.Scripts
         [SerializeField]
         private GameObject _muzzlePoint;
         [SerializeField]
-        private float _fireRate = 1f; 
+        private float _fireRate = 1f;
 
+        private AudioSource _audioSource;
         private Rigidbody _rigidbody;
         private Vector3 _moveVelocity;
         private Quaternion _targetRotation;
@@ -29,6 +30,7 @@ namespace Assets.Scripts
             _rigidbody = GetComponent<Rigidbody>();
             _timeBetweenShots = 1f / _fireRate;
             _lastShot = -100f;
+            _audioSource = GetComponent<AudioSource>();
         }
 
         public void Move(Vector3 velocity)
@@ -53,7 +55,7 @@ namespace Assets.Scripts
             _targetRotation = Quaternion.LookRotation(toTarget.normalized);            
         }
 
-        public void Fire()
+        public bool Fire()
         {
             if (_boostFrames < 1 && _lastShot + _timeBetweenShots < Time.time)
             {
@@ -61,7 +63,10 @@ namespace Assets.Scripts
                 var bullet = PrefabManager.Create("Bullet");
                 bullet.transform.rotation = _muzzlePoint.transform.rotation;
                 bullet.transform.position = _muzzlePoint.transform.position;
+                _audioSource.PlayOneShot(_audioSource.clip);
+                return true;
             }
+            return false;
         }
 
         public void FixedUpdate()
@@ -76,8 +81,7 @@ namespace Assets.Scripts
             if (_boostFrames < 0)
                 _boostFrames++;
             
-            if(_targetRotation.w > 0f)            
-                _rigidbody.MoveRotation(_targetRotation);
+            _rigidbody.MoveRotation(_targetRotation);
 
             if (_useAlternateMovementScheme)
             {

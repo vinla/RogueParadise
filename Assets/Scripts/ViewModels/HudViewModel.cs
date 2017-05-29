@@ -26,6 +26,11 @@ namespace Assets.Scripts.ViewModels
                 RaisePropertyChanged("LevelTime");
                 RaisePropertyChanged("CrystalCount");
                 RaisePropertyChanged("Damage");
+                RaisePropertyChanged("Energy");
+                RaisePropertyChanged("MaxEnergy");
+                RaisePropertyChanged("EnergyPercentage");
+                RaisePropertyChanged("DamageText");
+                RaisePropertyChanged("DamagePercentage");
                 yield return new WaitForSeconds(0.1f);
             }
         }
@@ -47,11 +52,37 @@ namespace Assets.Scripts.ViewModels
             }
         }
 
-        public String Damage
+        public String DamageText
         {
             get
             {
-                return _player.HitPoints.ToString();
+                return String.Format("{0} / {1}", _player.HitPoints, _player.MaxHitPoints);
+            }
+        }
+
+        public int DamagePercentage
+        {
+            get
+            {
+                return (int)((_player.HitPoints / _player.MaxHitPoints) * 200);
+            }
+        }
+
+        public float MaxEnergy
+        {
+            get { return _player.MaxEnergy; }
+        }
+
+        public float Energy
+        {
+            get { return _player.Energy; }
+        }
+
+        public int EnergyPercentage
+        {
+            get
+            {
+                return (int)((_player.Energy / _player.MaxEnergy) * 200);
             }
         }
     }
